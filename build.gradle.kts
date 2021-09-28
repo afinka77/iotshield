@@ -1,3 +1,8 @@
+val springVersion = "2.5.5"
+val lombokVersion = "1.18.20"
+val reactorVersion = "3.4.10"
+val jacksonVersion = "2.12.5"
+
 plugins {
     java
     id("org.springframework.boot") version "2.5.5"
@@ -6,20 +11,26 @@ plugins {
 group = "com.project."
 version = "1.0-SNAPSHOT"
 
+configure<JavaPluginExtension> {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.20")
-    annotationProcessor("org.projectlombok:lombok:1.18.20")
-    implementation("org.springframework.boot:spring-boot-starter:2.5.4")
-
-    testCompileOnly("org.projectlombok:lombok:1.18.20")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.20")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:2.5.4")
-    //testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-    //testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    implementation("org.springframework.boot:spring-boot-starter:$springVersion")
+    implementation("io.projectreactor:reactor-core:$reactorVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
+    testImplementation("io.projectreactor:reactor-test:$reactorVersion")
 }
 
 tasks.getByName<Test>("test") {

@@ -8,7 +8,7 @@
 {"type": "request", "request_id": "d29f858411c549cea12589b2d74dbf5f", "model_name": "iPhone", "device_id": "7719aac0f34244cd9cf998505804a667", "url": "facebook.com", "timestamp": 1563951300101}
 {"type": "request", "request_id": "bf8c9193d686457aa8e782650efc4a3a", "model_name": "iPhone", "device_id": "d7c29fd60cee4e5f848bd198bcc2e100", "url": "facebook.com", "timestamp": 1563951300858}
 {"type": "request", "request_id": "2b9522dce0bd45579400dc01e6a5456b", "model_name": "iPhone", "device_id": "7719aac0f34244cd9cf998505804a667", "url": "google.com", "timestamp": 1563951305045}
-{"type": "profile_update", "model_name": "iPhone", "blacklist": [1563951307799], "timestamp": "bad_site.com"}
+{"type": "profile_update", "model_name": "iPhone", "blacklist": ["bad_site.com"], "timestamp": 1563951307799}
 {"type": "request", "request_id": "f9f3cd768d404b828e2f0b5f8e70b60a", "model_name": "IOT Lightbulb", "device_id": "c8e80d8f54a14c1a9f26de89c3c2a6a9", "url": "api.lightbulb.com/v1/", "timestamp": 1563951310718}
 {"type": "request", "request_id": "967f3272a64f4dd99f446ab33e777a42", "model_name": "iPhone", "device_id": "d7c29fd60cee4e5f848bd198bcc2e100", "url": "fake_bank.com", "timestamp": 1563951312010}
 {"type": "request", "request_id": "a76acef0cd8e460ebd8fd1fa10813ec2", "model_name": "iPhone", "device_id": "7719aac0f34244cd9cf998505804a667", "url": "google.com", "timestamp": 1563951316838}

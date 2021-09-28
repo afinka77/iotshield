@@ -1,2 +1,5 @@
 spring:
   application.name: iotshield
+
+ioshield:
+  input.file.name: data\input.json
