@@ -23,12 +23,15 @@ import java.util.Optional;
 public class IoTShieldService {
 
     private ParserService parserService;
+    private StatisticsService statisticsService;
     private ObjectMapper mapper;
     private Map<String, Profile> profileMap = new HashMap<>();
 
     public IoTShieldService(@Autowired ParserService parserService,
+                            @Autowired StatisticsService statisticsService,
                             @Autowired ObjectMapper mapper) {
         this.parserService = parserService;
+        this.statisticsService = statisticsService;
         this.mapper = mapper;
     }
 
