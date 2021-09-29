@@ -12,7 +12,6 @@ import com.myproject.iotshield.event.RequestEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,47 +45,20 @@ public class IoTShieldService {
     }
 
     private void handleRequestEvent(RequestEvent requestEvent) {
-        printResponses(getResponses(requestEvent));
+        Response response = getResponse(requestEvent);
+        statisticsService.addRequestStatistics(requestEvent, response);
+        printResponse(response);
     }
 
-    private Flux<Response> getResponses(RequestEvent requestEvent) {
-        Flux<Response> flux = Flux.just();
+    private Response getResponse(RequestEvent requestEvent) {
         String modelName = requestEvent.getModelName();
         Profile profile = profileMap.get(modelName);
-        if (profile != null) {
-            Action action = getAction(profile, requestEvent);
-            Response response = Response.builder()
-                    .requestId(Action.QUARANTINE.equals(action) ? null : requestEvent.getRequestId())
-                    .deviceId(Action.QUARANTINE.equals(action) ? requestEvent.getDeviceId() : null)
-                    .action(getAction(profile, requestEvent))
-                    .build();
-            flux = Flux.concat(flux, Flux.just(response));
-        }
-        return flux;
-    }
-
-    private void printResponses(Flux<Response> flux) {
-        flux.subscribe(this::printJsonAsString);
-    }
-
-    private void printJsonAsString(Object json) {
-        try {
-            System.out.println(mapper.writeValueAsString(json));
-        } catch (JsonProcessingException e) {
-            throw new ApplicationContextException("Error while writing response", e);
-        }
-    }
-
-    private Action getAction(Profile profile, RequestEvent requestEvent) {
-        if (Policy.BLOCK.equals(profile.getDefaultPolicy())) {
-            if (!profile.getWhitelist().contains(requestEvent.getUrl())) {
-                return Action.QUARANTINE;
-            }
-        } else if (profile.getBlacklist().contains(requestEvent.getUrl())) {
-            return Action.BLOCK;
-        }
-
-        return Action.ALLOW;
+        Action action = profile != null ? getAction(profile, requestEvent) : Action.ALLOW;
+        return Response.builder()
+                .requestId(Action.QUARANTINE.equals(action) ? null : requestEvent.getRequestId())
+                .deviceId(Action.QUARANTINE.equals(action) ? requestEvent.getDeviceId() : null)
+                .action(action)
+                .build();
     }
 
     private void createProfile(ProfileCreateEvent profileCreateEvent) {
@@ -109,6 +81,27 @@ public class IoTShieldService {
                 profile.setWhitelist(Optional.ofNullable(profileUpdateEvent.getWhitelist()).orElse(new ArrayList<>()));
             }
             profileMap.put(profileUpdateEvent.getModelName(), profile);
+            statisticsService.addProfileUpdateStatistics(profileUpdateEvent, profile.getDefaultPolicy());
+        }
+    }
+
+    private Action getAction(Profile profile, RequestEvent requestEvent) {
+        if (Policy.BLOCK.equals(profile.getDefaultPolicy())) {
+            if (!profile.getWhitelist().contains(requestEvent.getUrl())) {
+                return Action.QUARANTINE;
+            }
+        } else if (profile.getBlacklist().contains(requestEvent.getUrl())) {
+            return Action.BLOCK;
+        }
+
+        return Action.ALLOW;
+    }
+
+    private void printResponse(Response response) {
+        try {
+            System.out.println(mapper.writeValueAsString(response));
+        } catch (JsonProcessingException e) {
+            throw new ApplicationContextException("Error while writing response", e);
         }
     }
 }
