@@ -11,11 +11,6 @@ plugins {
 group = "com.project."
 version = "1.0-SNAPSHOT"
 
-configure<JavaPluginExtension> {
-    sourceCompatibility = JavaVersion.VERSION_16
-    targetCompatibility = JavaVersion.VERSION_16
-}
-
 repositories {
     mavenCentral()
 }

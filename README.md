@@ -1,7 +1,5 @@
 # IoT Shield Challenge implementation 
 
-@author Alina Gončarko 
-
 It's a tiny security app **IoT Shield** designed to protect IoT devices based on some allowed behavioral patterns.
 
 There is a fancy AI powered system that provides profile data for devices. Based on this information we can detect devices that are behaving suspiciously (were hacked?!) and stop them from accessing sensitive content.
@@ -47,3 +45,9 @@ If a device has a `default_policy` of `block` and sends invalid request(s) it sh
     - How many devices are suspected to be hacked?
     - How many blocks were missed due to delayed profile updates?
     - How many blocks were issued incorrectly due to delayed profile updates?
+
+#### Building project from command line window:
+>.\gradlew clean build
+
+#### Running project from command line window:
+>.\gradlew bootRun
